@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neuphonic Agent</title>
+</head>
+<body>
+  <h1>Neuphonic Agent Demo</h1>
+  <button id="startAgent">Start Agent</button>
+  <div id="responses">
+    <h2>Responses</h2>
+    <p><strong>User:</strong> <span id="userResponse"></span></p>
+    <p><strong>Agent:</strong> <span id="agentResponse"></span></p>
+  </div>
+
+  <script>
+    document.getElementById('startAgent').addEventListener('click', async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/process-audio');
+        const data = await response.json();
+
+        if (data.error) {
+          alert(`Error: ${data.error}`);
+        } else {
+          document.getElementById('userResponse').innerText = data.user.join(', ');
+          document.getElementById('agentResponse').innerText = data.agent.join(', ');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to process the request. Check the console for details.');
+      }
+    });
+  </script>
+</body>
+</html>
+
